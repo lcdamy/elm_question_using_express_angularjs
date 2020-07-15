@@ -1,0 +1,59 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+  </head>
+</head>
+<body ng-controller="TodoController">
+  <h2>
+    Latest news on hackers news
+  </h2>
+  <hr />
+  <br>
+  <p ng-repeat="new in allnews track by $index">
+    <strong>{{$index+1}}. {{ new.title }}</strong>
+    <br>
+    <em>{{new.comment}}</em><br><br>
+    <em> <textarea placeholder="type..." ng-model="newComment" cols="100"></textarea><br><button
+        ng-click="showMessage($index,newComment)">Save</button></em>
+  </p>
+  <script>
+    angular.module("app", [])
+      .controller('TodoController', ['$scope', '$http', function ($scope, $http) {
+        loadNews();
+        $scope.allnews = [];
+        $scope.model = {};
+        function getNewsIds() {
+          return $http({
+            method: 'GET',
+            url: 'https://hacker-news.firebaseio.com/v0/topstories.json'
+          }).then(function successCallback(response) {
+            $scope.news = response.data;
+          }, function errorCallback(response) {
+            console.error(response);
+          });
+        }
+
+        function getNews() {
+          for (var i = 0; i < $scope.news.length; i++) {
+            (function () {
+              $http.get('https://hacker-news.firebaseio.com/v0/item/' + $scope.news[i] + '.json?print=pretty').then(function (result) {
+                $scope.allnews.push(result.data);
+              });
+            })($scope.news[i]);
+          }
+        }
+
+        function loadNews() {
+          getNewsIds().then(getNews);
+        }
+
+        $scope.showMessage = function (index, newComment) {
+          $scope.allnews[index].comment = newComment;
+        }
+      }]);
+  </script>
+</body>
+
+</html>
