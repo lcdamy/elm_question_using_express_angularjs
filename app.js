@@ -1,9 +1,9 @@
-require('./api/data/db.js');
+// require('./api/data/db.js');
 var express = require('express');
 var app = express();
 var path = require('path');
-var bodyParser = require('body-parser');
-var routes = require('./api/routes');
+// var bodyParser = require('body-parser');
+//  var routes = require('./api/routes');
 
 app.set("port", 3000);
 
@@ -12,9 +12,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api', routes);
+// app.use('/api', routes);
 
 app.use("/", (req, res) => {
     res
@@ -23,6 +23,6 @@ app.use("/", (req, res) => {
 });
 
 app.listen(app.get('port'), () => {
-    // console.log(app.get('port'));
+     console.log("app listening at http://localhost: "+app.get('port'));
 });
 
