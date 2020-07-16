@@ -1,9 +1,7 @@
-require('./api/data/db.js');
 var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
-var routes = require('./api/routes');
 
 app.set("port", 3000);
 
@@ -13,8 +11,6 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use('/api', routes);
 
 app.use("/", (req, res) => {
     res
